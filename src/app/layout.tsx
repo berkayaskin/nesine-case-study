@@ -9,7 +9,7 @@ import '@/styles/globals.css'
 
 export const metadata: Metadata = {
   title: APP_NAME,
-  description: 'Next.js + TailwindCSS v3 + TypeScript template',
+  description: 'Nesine.com Case Study',
   viewport: {
     width: 'device-width',
     initialScale: 1,
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
   themeColor: '#FFFFFF',
   openGraph: {
     url: 'https://berkayaskin.dev',
-    title: 'next-starter-tailwind',
-    description: 'Next.js + TailwindCSS v3 + TypeScript template',
+    title: 'nesine-case-study',
+    description: 'Nesine.com Case Study',
     images: {
       url: '',
       alt: 'berkayaskin.dev og-image',

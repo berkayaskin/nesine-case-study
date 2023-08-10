@@ -2,7 +2,6 @@ import type { ReactNode } from 'react'
 
 import { ReduxProvider, ThemeProvider } from '@/lib/providers'
 
-import Footer from './footer'
 import Header from './header'
 
 type LayoutProps = {
@@ -18,7 +17,6 @@ const Layout = ({ children }: LayoutProps) => {
           <main className="wrapper flex flex-1 items-center justify-center">
             {children}
           </main>
-          <Footer />
         </div>
       </ThemeProvider>
     </ReduxProvider>
