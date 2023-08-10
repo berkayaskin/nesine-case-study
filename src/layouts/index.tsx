@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { ReduxProvider, ThemeProvider } from '@/lib/providers'
+import { ReduxProvider, ThemeProvider } from '@/providers'
 
 import Header from './header'
 
@@ -14,7 +14,7 @@ const Layout = ({ children }: LayoutProps) => {
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <div className="flex min-h-screen flex-col">
           <Header />
-          <main className="wrapper flex flex-1 items-center justify-center">
+          <main className="container relative flex flex-1 items-center justify-center">
             {children}
           </main>
         </div>

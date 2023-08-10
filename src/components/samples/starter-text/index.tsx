@@ -1,6 +1,6 @@
 'use client'
 
-import { useAppSelector } from '@/lib/redux/hooks/useAppSelector'
+import { useAppSelector } from '@/redux/hooks/useAppSelector'
 
 const StarterText = () => {
   const userName = useAppSelector((state) => state.auth.user)
