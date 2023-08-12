@@ -1,9 +1,10 @@
+import Bulletin from '@/components/bulletin'
 import type { NextPage } from 'next'
 
-const Home: NextPage = () => {
+const Home: NextPage = async () => {
   return (
-    <div className="flex flex-col items-center justify-center gap-8 text-center">
-      Nesine Case Study
+    <div className="flex h-full w-full flex-col items-center justify-center gap-8 text-center">
+      <Bulletin />
     </div>
   )
 }
