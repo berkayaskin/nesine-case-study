@@ -24,6 +24,7 @@
   "dependencies": {
     "@radix-ui/react-slot": "^1.0.2",
     "@reduxjs/toolkit": "^1.9.5",
+    "@tanstack/react-query": "^4.32.6",
     "@tanstack/react-table": "^8.9.3",
     "class-variance-authority": "^0.6.1",
     "clsx": "^2.0.0",
@@ -36,6 +37,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
     "react-redux": "^8.1.2",
+    "react-virtual": "^2.10.4",
     "tailwind-merge": "^1.13.2",
     "tailwindcss-animate": "^1.0.6"
   },
