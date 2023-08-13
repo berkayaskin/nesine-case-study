@@ -1,7 +1,9 @@
 'use client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { useState } from 'react'
 
-export const queryClient = new QueryClient({
+export const client = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnMount: false,
@@ -15,4 +17,12 @@ export const ReactQueryProvider = ({
   children,
 }: {
   children: React.ReactNode
-}) => <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+}) => {
+  const [queryClient] = useState(client)
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
+      {children}
+    </QueryClientProvider>
+  )
+}
