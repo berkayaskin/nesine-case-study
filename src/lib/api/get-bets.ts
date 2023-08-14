@@ -1,8 +1,8 @@
-import { Match } from '@/data/bets/bets.types'
 import { API_URL } from '@/data/constants'
+import { Match } from '@/types/bets.types'
 import { fetchData } from './fetch'
 
-export const getBetsQueryFn = async (start: number = 0, size: number) => {
+export const getBets = async (start: number = 0, size: number) => {
   const bets: Match[] = await fetchData(`${API_URL}/bets`)
 
   const transformedBets = bets.map((bet: Match) => {

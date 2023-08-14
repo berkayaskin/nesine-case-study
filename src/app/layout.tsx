@@ -1,8 +1,8 @@
-import type { Metadata } from 'next'
-
-import Layout from '@/layouts'
+import Layout from '@/components/layouts'
+import { Providers } from '@/lib/providers'
 import { cn } from '@/lib/utils'
 import { fontSans } from '@/styles/fonts'
+import type { Metadata } from 'next'
 
 import { APP_NAME } from '@/data/constants'
 import '@/styles/globals.css'
@@ -52,7 +52,9 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           fontSans.variable
         )}
       >
-        <Layout>{children}</Layout>
+        <Providers>
+          <Layout>{children}</Layout>
+        </Providers>
       </body>
     </html>
   )

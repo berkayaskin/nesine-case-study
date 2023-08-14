@@ -1,5 +1,6 @@
 'use client'
 
+import { Icons } from '@/assets/lucide-icons'
 import {
   Card,
   CardContent,
@@ -8,8 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { useCoupon } from '@/contexts/coupon-context'
-import { CircleDotDashedIcon } from 'lucide-react'
+import { useCoupon } from '@/contexts/coupon'
 
 const Coupon = () => {
   const { coupon } = useCoupon()
@@ -44,7 +44,7 @@ const Coupon = () => {
           </ul>
         ) : (
           <CardDescription className="my-8 flex flex-col items-center justify-center gap-6 text-xl font-semibold">
-            <CircleDotDashedIcon size={48} />
+            <Icons.Circle size={48} />
             Kuponunuzda maç bulunmamaktadır.
           </CardDescription>
         )}

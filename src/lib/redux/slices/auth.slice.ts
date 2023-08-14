@@ -1,9 +1,5 @@
+import { AuthState } from '@/types/auth.types'
 import { createSlice } from '@reduxjs/toolkit'
-
-export type AuthState = {
-  isAuthenticated: boolean
-  user: string
-}
 
 const initialState: AuthState = {
   isAuthenticated: false,

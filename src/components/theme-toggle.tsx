@@ -1,9 +1,8 @@
 'use client'
 
-import { useTheme } from 'next-themes'
-
 import { Icons } from '@/assets/lucide-icons'
 import { Button } from '@/components/ui/button'
+import { useTheme } from 'next-themes'
 
 export function ThemeToggle() {
   const { setTheme, theme } = useTheme()

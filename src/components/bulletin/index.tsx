@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import {
   Table,
   TableBody,
@@ -8,8 +9,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { useCoupon } from '@/contexts/coupon'
 import { fetchSize } from '@/data/constants'
-import { getBetsQueryFn } from '@/lib/api/getBetsQueryFn'
+import { getBets } from '@/lib/api'
+import { cn } from '@/lib/utils'
+import { Coupon } from '@/types/coupon.types'
+import { TransformedBet } from '@/types/transformed-bets.types'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import {
   ColumnDef,
@@ -28,11 +33,6 @@ import {
   useRef,
   useState,
 } from 'react'
-
-import { Coupon, useCoupon } from '@/contexts/coupon-context'
-import { cn } from '@/lib/utils'
-import { Button } from '../ui/button'
-import { TransformedBet } from './transformed-bets.types'
 
 const Bulletin = () => {
   /*
@@ -374,7 +374,7 @@ const Bulletin = () => {
     ['table-data'],
     async ({ pageParam = 0 }) => {
       const start = pageParam * fetchSize
-      const fetchedData = await getBetsQueryFn(start, fetchSize)
+      const fetchedData = await getBets(start, fetchSize)
       return fetchedData
     },
     {
