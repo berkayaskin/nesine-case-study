@@ -23,36 +23,38 @@ const Coupon = () => {
       : 0
 
   return (
-    <Card className="relative flex flex-col items-start justify-center text-xl xl:gap-4">
-      <CardHeader className="w-full border-b border-border bg-muted">
-        <CardTitle>İDDAA KUPONUM</CardTitle>
-      </CardHeader>
-      <CardContent className="w-full">
-        {coupon && coupon.length > 0 ? (
-          <ul className="p-2 pt-0">
-            {coupon.map((item) => (
-              <li
-                key={item.id}
-                className="min-w-max space-x-4 border-b border-border p-4 text-left"
-              >
-                <span>{item.minBetStake}</span>
-                <span>Kod: {item.id}</span>
-                <span>Maç: {item.name}</span>
-                <span className="font-bold">Oran: {item.oddValue}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <CardDescription className="my-8 flex flex-col items-center justify-center gap-6 text-xl font-semibold">
-            <Icons.Circle size={48} />
-            Kuponunuzda maç bulunmamaktadır.
-          </CardDescription>
-        )}
-      </CardContent>
-      <CardFooter className="block font-medium">
-        Toplam Tutar: {totalAmount} TL
-      </CardFooter>
-    </Card>
+    <div className="fixed bottom-0 right-0 z-50 w-1/3 min-w-max 2xl:w-1/5">
+      <Card className="relative flex flex-col items-start justify-center text-xl xl:gap-4">
+        <CardHeader className="w-full border-b border-border bg-muted">
+          <CardTitle>İDDAA KUPONUM</CardTitle>
+        </CardHeader>
+        <CardContent className="w-full">
+          {coupon && coupon.length > 0 ? (
+            <ul className="p-2 pt-0">
+              {coupon.map((item) => (
+                <li
+                  key={item.id}
+                  className="min-w-max space-x-4 border-b border-border p-4 text-left"
+                >
+                  <span>{item.minBetStake}</span>
+                  <span>Kod: {item.id}</span>
+                  <span>Maç: {item.name}</span>
+                  <span className="font-bold">Oran: {item.oddValue}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <CardDescription className="my-8 flex flex-col items-center justify-center gap-6 text-xl font-semibold">
+              <Icons.Circle size={48} />
+              Kuponunuzda maç bulunmamaktadır.
+            </CardDescription>
+          )}
+        </CardContent>
+        <CardFooter className="block font-medium">
+          Toplam Tutar: {totalAmount} TL
+        </CardFooter>
+      </Card>
+    </div>
   )
 }
 export default Coupon

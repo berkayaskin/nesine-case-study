@@ -1,5 +1,6 @@
 import {
   CircleDotDashed,
+  Loader2,
   Moon,
   SunMedium,
   type Icon as LucideIcon,
@@ -11,4 +12,5 @@ export const Icons = {
   Sun: SunMedium,
   Moon,
   Circle: CircleDotDashed,
+  Loader: Loader2,
 }

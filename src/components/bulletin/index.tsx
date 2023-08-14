@@ -1,5 +1,6 @@
 'use client'
 
+import { Icons } from '@/assets/lucide-icons'
 import { Button } from '@/components/ui/button'
 import {
   Table,
@@ -24,22 +25,13 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { useVirtual } from '@tanstack/react-virtual'
-import {
-  Fragment,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { Fragment, memo, useMemo, useRef, useState } from 'react'
 
 const Bulletin = () => {
   /*
    * TODOS
    * Solve the table is flickering issue while scrolling
    * Breakup the table into smaller components
-   * Add a loading indicator
    * Create columns dynamically
    */
 
@@ -48,7 +40,7 @@ const Bulletin = () => {
 
   const { coupon, setCoupon } = useCoupon()
 
-  const handleCellClick = (
+  const handleClickCell = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     cellValue: string,
     row: Row<TransformedBet>
@@ -144,7 +136,7 @@ const Bulletin = () => {
           <Button
             variant="ghost"
             onClick={(e) => {
-              handleCellClick(e, oddValue, row)
+              handleClickCell(e, oddValue, row)
             }}
             className={cn('text-blue-500 underline hover:text-blue-600', {
               'bg-yellow-200 no-underline hover:bg-yellow-200':
@@ -173,7 +165,7 @@ const Bulletin = () => {
           <Button
             variant="ghost"
             onClick={(e) => {
-              handleCellClick(e, oddValue, row)
+              handleClickCell(e, oddValue, row)
             }}
             className={cn('text-blue-500 underline hover:text-blue-600', {
               'bg-yellow-200 no-underline hover:bg-yellow-200':
@@ -205,7 +197,7 @@ const Bulletin = () => {
           <Button
             variant="ghost"
             onClick={(e) => {
-              handleCellClick(e, oddValue, row)
+              handleClickCell(e, oddValue, row)
             }}
             className={cn('text-blue-500 underline hover:text-blue-600', {
               'bg-yellow-200 no-underline hover:bg-yellow-200':
@@ -234,7 +226,7 @@ const Bulletin = () => {
           <Button
             variant="ghost"
             onClick={(e) => {
-              handleCellClick(e, oddValue, row)
+              handleClickCell(e, oddValue, row)
             }}
             className={cn('text-blue-500 underline hover:text-blue-600', {
               'bg-yellow-200 no-underline hover:bg-yellow-200':
@@ -283,7 +275,7 @@ const Bulletin = () => {
           <Button
             variant="ghost"
             onClick={(e) => {
-              handleCellClick(e, oddValue, row)
+              handleClickCell(e, oddValue, row)
             }}
             className={cn('text-blue-500 underline hover:text-blue-600', {
               'bg-yellow-200 no-underline hover:bg-yellow-200':
@@ -312,7 +304,7 @@ const Bulletin = () => {
           <Button
             variant="ghost"
             onClick={(e) => {
-              handleCellClick(e, oddValue, row)
+              handleClickCell(e, oddValue, row)
             }}
             className={cn(
               'text-blue-500 underline hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500',
@@ -344,7 +336,7 @@ const Bulletin = () => {
           <Button
             variant="ghost"
             onClick={(e) => {
-              handleCellClick(e, oddValue, row)
+              handleClickCell(e, oddValue, row)
             }}
             className={cn('text-blue-500 underline hover:text-blue-600', {
               'bg-yellow-200 no-underline hover:bg-yellow-200':
@@ -374,11 +366,13 @@ const Bulletin = () => {
     ['table-data'],
     async ({ pageParam = 0 }) => {
       const start = pageParam * fetchSize
-      const fetchedData = await getBets(start, fetchSize)
+      const fetchedData = getBets(start, fetchSize)
       return fetchedData
     },
     {
       getNextPageParam: (_lastGroup, groups) => groups.length,
+      keepPreviousData: true,
+      refetchOnWindowFocus: false,
     }
   )
 
@@ -391,27 +385,9 @@ const Bulletin = () => {
   const totalDBRowCount = data?.pages?.[0]?.meta?.total ?? 0
   const totalFetched = flatData.length
 
-  //called on scroll and possibly on mount to fetch more data as the user scrolls and reaches bottom of table
-  const fetchMoreOnBottomReached = useCallback(
-    (containerRefElement?: HTMLDivElement | null) => {
-      if (containerRefElement) {
-        const { scrollHeight, scrollTop, clientHeight } = containerRefElement
-        //once the user has scrolled within 300px of the bottom of the table, fetch more data if there is any
-        if (
-          scrollHeight - scrollTop - clientHeight < 300 &&
-          !isFetching &&
-          totalFetched < totalDBRowCount
-        ) {
-          fetchNextPage()
-        }
-      }
-    },
-    [fetchNextPage, isFetching, totalFetched, totalDBRowCount]
-  )
-
-  useEffect(() => {
-    fetchMoreOnBottomReached(tableContainerRef.current)
-  }, [fetchMoreOnBottomReached])
+  const handleLoadMoreClick = () => {
+    fetchNextPage()
+  }
 
   const table = useReactTable({
     data: flatData,
@@ -422,29 +398,27 @@ const Bulletin = () => {
 
   const { rows } = table.getRowModel()
 
-  const rowVirtualizer = useVirtual({
+  // Calculate the padding at the top and bottom of the table
+  const { virtualItems: virtualRows, totalSize } = useVirtual({
     parentRef: tableContainerRef,
     size: rows.length,
-    overscan: 10,
+    overscan: 5,
   })
-  const { virtualItems: virtualRows, totalSize } = rowVirtualizer
 
-  const paddingTop = virtualRows.length > 0 ? virtualRows?.[0]?.start || 0 : 0
-
+  const paddingTop = virtualRows.length > 0 ? virtualRows[0].start || 0 : 0
   const paddingBottom =
     virtualRows.length > 0
-      ? totalSize - (virtualRows?.[virtualRows.length - 1]?.end || 0)
+      ? totalSize - (virtualRows[virtualRows.length - 1].end || 0)
       : 0
 
   if (isLoading) {
-    return <>Loading...</>
+    return <Icons.Loader className="animate-spin" />
   }
 
   return (
     <div
-      className="max-h-[1600px] overflow-auto text-center"
+      className="max-h-[calc(100vh-76px)] min-w-[100vw] overflow-auto text-center"
       ref={tableContainerRef}
-      onScroll={(e) => fetchMoreOnBottomReached(e.target as HTMLDivElement)}
     >
       <Table>
         <TableHeader>
@@ -472,9 +446,9 @@ const Bulletin = () => {
         </TableHeader>
         <TableBody>
           {paddingTop > 0 && (
-            <tr>
-              <td style={{ height: `${paddingTop}px` }} />
-            </tr>
+            <TableRow>
+              <TableCell style={{ height: `${paddingTop}px` }} />
+            </TableRow>
           )}
           {virtualRows.map((virtualRow) => {
             const row = rows[virtualRow.index]
@@ -520,18 +494,21 @@ const Bulletin = () => {
           })}
           {paddingBottom > 0 && (
             <TableRow>
-              <TableCell className={`h-[${paddingBottom}px]`} />
-            </TableRow>
-          )}
-          {isFetching && (
-            <TableRow>
-              <TableCell className="text-center" colSpan={columns.length}>
-                Loading...
-              </TableCell>
+              <TableCell style={{ height: `${paddingBottom}px` }} />
             </TableRow>
           )}
         </TableBody>
       </Table>
+      {isFetching && (
+        <div className="flex w-full items-center justify-center py-5">
+          <Icons.Loader className="animate-spin" />
+        </div>
+      )}
+      {!isFetching && totalFetched < totalDBRowCount && (
+        <div className="flex w-full items-center justify-center py-5">
+          <Button onClick={handleLoadMoreClick}>Load More</Button>
+        </div>
+      )}
     </div>
   )
 }
