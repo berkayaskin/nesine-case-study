@@ -38,7 +38,9 @@ const Bulletin = () => {
   /*
    * TODOS
    * Solve the table is flickering issue while scrolling
-   * Solve fetching additional data on initial load
+   * Breakup the table into smaller components
+   * Add a loading indicator
+   * Create columns dynamically
    */
 
   const tableContainerRef = useRef<HTMLDivElement>(null)
@@ -440,7 +442,7 @@ const Bulletin = () => {
 
   return (
     <div
-      className="max-h-[800px] overflow-auto"
+      className="max-h-[1600px] overflow-auto text-center"
       ref={tableContainerRef}
       onScroll={(e) => fetchMoreOnBottomReached(e.target as HTMLDivElement)}
     >

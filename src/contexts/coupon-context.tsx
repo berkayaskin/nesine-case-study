@@ -15,7 +15,6 @@ export type Coupon = {
   name: string
   oddValue: string
   minBetStake: string
-  totalAmount?: number
 }
 
 type CouponContextType = {
@@ -35,18 +34,7 @@ const CouponContext = createContext<CouponContextType>({
 const CouponProvider: FC<CouponProviderProps> = ({ children }) => {
   const [coupon, setCoupon] = useState<Coupon[] | null>(null)
 
-  // calculate totalAmount based on multiplication of oddValues
-  const totalAmount = coupon?.reduce(
-    (acc, curr) => acc * Number(curr.oddValue),
-    1
-  )
-
-  const couponWithTotalAmount = coupon?.map((c) => ({
-    ...c,
-    totalAmount: Number(totalAmount?.toFixed(2)),
-  }))
-
-  const value = { coupon: couponWithTotalAmount || null, setCoupon }
+  const value = { coupon, setCoupon }
 
   return (
     <CouponContext.Provider value={value}>{children}</CouponContext.Provider>
