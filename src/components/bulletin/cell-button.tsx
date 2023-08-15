@@ -24,7 +24,7 @@ export const CellButton = ({ row, oddValue }: CellButtonProps) => {
       onClick={(e) => handleClickCell(e, oddValue, row)}
       className={cn('text-blue-500 underline hover:text-blue-600', {
         'bg-yellow-200 no-underline hover:bg-yellow-200':
-          isRowSelected && isCellSelected,
+          (isRowSelected && isCellSelected) || isCellSelected,
       })}
     >
       {oddValue}
