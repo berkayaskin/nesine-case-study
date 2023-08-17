@@ -36,7 +36,8 @@ export const columns: ColumnDef<TransformedBet>[] = [
     header: '1',
     cell: ({ row }) => {
       const oddValue = row.original.oddCategories[0].odds[0].value
-      return <CellButton oddValue={oddValue} row={row} />
+      const oddId = row.original.oddCategories[0].odds[0].id
+      return <CellButton oddValue={oddValue} row={row} oddId={oddId} />
     },
   },
   {
@@ -45,8 +46,9 @@ export const columns: ColumnDef<TransformedBet>[] = [
     header: 'x',
     cell: ({ row }) => {
       const oddValue = row.original.oddCategories[0].odds[1].value
+      const oddId = row.original.oddCategories[0].odds[1].id
 
-      return <CellButton oddValue={oddValue} row={row} />
+      return <CellButton oddValue={oddValue} row={row} oddId={oddId} />
     },
   },
   {
@@ -58,8 +60,9 @@ export const columns: ColumnDef<TransformedBet>[] = [
     header: 'Alt',
     cell: ({ row }) => {
       const oddValue = row.original.oddCategories[2].odds[0].value
+      const oddId = row.original.oddCategories[2].odds[0].id
 
-      return <CellButton oddValue={oddValue} row={row} />
+      return <CellButton oddValue={oddValue} row={row} oddId={oddId} />
     },
   },
   {
@@ -68,8 +71,9 @@ export const columns: ColumnDef<TransformedBet>[] = [
     header: 'Üst',
     cell: ({ row }) => {
       const oddValue = row.original.oddCategories[2].odds[1].value
+      const oddId = row.original.oddCategories[2].odds[1].id
 
-      return <CellButton oddValue={oddValue} row={row} />
+      return <CellButton oddValue={oddValue} row={row} oddId={oddId} />
     },
   },
   {
@@ -98,8 +102,9 @@ export const columns: ColumnDef<TransformedBet>[] = [
     header: '1-X',
     cell: ({ row }) => {
       const oddValue = row.original.oddCategories[1].odds[0].value
+      const oddId = row.original.oddCategories[1].odds[0].id
 
-      return <CellButton oddValue={oddValue} row={row} />
+      return <CellButton oddValue={oddValue} row={row} oddId={oddId} />
     },
   },
   {
@@ -108,8 +113,9 @@ export const columns: ColumnDef<TransformedBet>[] = [
     header: '1-2',
     cell: ({ row }) => {
       const oddValue = row.original.oddCategories[1].odds[1].value
+      const oddId = row.original.oddCategories[1].odds[1].id
 
-      return <CellButton oddValue={oddValue} row={row} />
+      return <CellButton oddValue={oddValue} row={row} oddId={oddId} />
     },
   },
   {
@@ -118,8 +124,9 @@ export const columns: ColumnDef<TransformedBet>[] = [
     header: 'X-2',
     cell: ({ row }) => {
       const oddValue = row.original.oddCategories[1].odds[2].value
+      const oddId = row.original.oddCategories[1].odds[2].id
 
-      return <CellButton oddValue={oddValue} row={row} />
+      return <CellButton oddValue={oddValue} row={row} oddId={oddId} />
     },
   },
   {

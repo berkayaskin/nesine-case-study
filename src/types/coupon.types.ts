@@ -6,6 +6,7 @@ export type Coupon = {
   id: string
   name: string
   oddValue: string
+  oddId: string
   minBetStake: string
 }
 
@@ -16,6 +17,7 @@ export type CouponContextType = {
   handleClickCell: (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     cellValue: string,
+    cellId: string,
     row: Row<TransformedBet>
   ) => void
 }

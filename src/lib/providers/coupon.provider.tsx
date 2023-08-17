@@ -13,22 +13,21 @@ export const CouponProvider: FC<CouponProviderProps> = ({ children }) => {
   const handleClickCell = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     cellValue: string,
+    cellId: string,
     row: Row<TransformedBet>
   ) => {
     e.preventDefault()
 
     const rowId = row.original.id
     const isCellSelected = coupon?.some(
-      (c) => c.id === rowId && c.oddValue === cellValue
+      (c) => c.id === rowId && c.oddId === cellId
     )
 
     if (isCellSelected) {
       // If the cell is already selected, remove it from the coupon array
       setCoupon((prev) => {
         if (prev) {
-          return prev.filter(
-            (c) => !(c.id === rowId && c.oddValue === cellValue)
-          )
+          return prev.filter((c) => !(c.id === rowId && c.oddId === cellId))
         }
         return [] as Coupon[]
       })
@@ -42,6 +41,7 @@ export const CouponProvider: FC<CouponProviderProps> = ({ children }) => {
               id: rowId,
               name: row.original.name,
               oddValue: cellValue,
+              oddId: cellId,
               minBetStake: row.original.oddCategories[0].minBetStake,
             })
         }
@@ -51,6 +51,7 @@ export const CouponProvider: FC<CouponProviderProps> = ({ children }) => {
             id: rowId,
             name: row.original.name,
             oddValue: cellValue,
+            oddId: cellId,
             minBetStake: row.original.oddCategories[0].minBetStake,
           },
         ]
