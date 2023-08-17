@@ -1,24 +1,24 @@
 'use client'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import {
+  HydrateProps,
+  QueryClient,
+  QueryClientProvider,
+  Hydrate as ReactQueryHydrate,
+} from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { useState } from 'react'
+import { queryClientOptions } from './react-query.client'
 
-export const client = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-    },
-  },
-})
+export const ReactQueryHydrator = (props: HydrateProps) => {
+  return <ReactQueryHydrate {...props} />
+}
 
 export const ReactQueryProvider = ({
   children,
 }: {
   children: React.ReactNode
 }) => {
-  const [queryClient] = useState(client)
+  const [queryClient] = useState(() => new QueryClient(queryClientOptions))
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
