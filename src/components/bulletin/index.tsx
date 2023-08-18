@@ -1,7 +1,6 @@
 'use client'
 
 import { Icons } from '@/assets/lucide-icons'
-import { Button } from '@/components/ui/button'
 import {
   Table,
   TableBody,
@@ -19,7 +18,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { useVirtual } from '@tanstack/react-virtual'
-import { Fragment, useMemo, useRef } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useRef } from 'react'
 import { columns } from './columns'
 
 const Bulletin = () => {
@@ -31,26 +30,51 @@ const Bulletin = () => {
   const tableContainerRef = useRef<HTMLDivElement>(null)
 
   // Fetch data using useInfiniteQuery
-  const { data, fetchNextPage, isFetching, isLoading, hasNextPage } =
-    useInfiniteQuery(
-      ['table-data'],
-      async ({ pageParam = 0 }) => {
-        const start = pageParam * fetchSize
-        const fetchedData = await getBets(start, fetchSize)
-        return fetchedData
-      },
-      {
-        getNextPageParam: (_lastGroup, groups) => groups.length,
-        keepPreviousData: true,
-        refetchOnWindowFocus: false,
-      }
-    )
+  const { data, fetchNextPage, isFetching, isLoading } = useInfiniteQuery(
+    ['table-data'],
+    async ({ pageParam = 0 }) => {
+      const start = pageParam * fetchSize
+      const fetchedData = await getBets(start, fetchSize)
+      return fetchedData
+    },
+    {
+      getNextPageParam: (_lastGroup, groups) => groups.length,
+      keepPreviousData: true,
+      refetchOnWindowFocus: false,
+    }
+  )
 
   // Flattened data
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page.data) ?? [],
     [data]
   )
+
+  const totalDBRowCount = data?.pages?.[0]?.meta?.total ?? 0
+  const totalFetched = flatData.length
+
+  //called on scroll and possibly on mount to fetch more data as the user scrolls and reaches bottom of table
+  const fetchMoreOnBottomReached = useCallback(
+    (containerRefElement?: HTMLDivElement | null) => {
+      if (containerRefElement) {
+        const { scrollHeight, scrollTop, clientHeight } = containerRefElement
+        //once the user has scrolled within 300px of the bottom of the table, fetch more data if there is any
+        if (
+          scrollHeight - scrollTop - clientHeight < 300 &&
+          !isFetching &&
+          totalFetched < totalDBRowCount
+        ) {
+          fetchNextPage()
+        }
+      }
+    },
+    [fetchNextPage, isFetching, totalFetched, totalDBRowCount]
+  )
+
+  //a check on mount and after a fetch to see if the table is already scrolled to the bottom and immediately needs to fetch more data
+  useEffect(() => {
+    fetchMoreOnBottomReached(tableContainerRef.current)
+  }, [fetchMoreOnBottomReached])
 
   // Create React Table instance
   const table = useReactTable({
@@ -83,6 +107,7 @@ const Bulletin = () => {
   return (
     <div
       className="max-h-[calc(100vh-76px)] min-w-[100vw] overflow-auto text-center"
+      onScroll={(e) => fetchMoreOnBottomReached(e.target as HTMLDivElement)}
       ref={tableContainerRef}
     >
       <Table>
@@ -119,7 +144,7 @@ const Bulletin = () => {
             const row = rows[virtualRow.index]
             return (
               <Fragment key={row.id}>
-                {table.getHeaderGroups().map((headerGroup) => {
+                {/* {table.getHeaderGroups().map((headerGroup) => {
                   return (
                     <TableRow key={headerGroup.id}>
                       {headerGroup.headers.map((header) => {
@@ -143,7 +168,7 @@ const Bulletin = () => {
                       })}
                     </TableRow>
                   )
-                })}
+                })} */}
                 <TableRow>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -167,11 +192,6 @@ const Bulletin = () => {
       {isFetching && (
         <div className="flex w-full items-center justify-center py-5">
           <Icons.Loader className="animate-spin" />
-        </div>
-      )}
-      {!isFetching && hasNextPage && (
-        <div className="flex w-full items-center justify-center py-5">
-          <Button onClick={() => fetchNextPage()}>Load More</Button>
         </div>
       )}
     </div>
